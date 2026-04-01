@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rooted in the Word – Resonate Church</title>
+    <style>
+      :root {
+        --slate: #2d3f4e;
+        --gold: #c9a96e;
+        --gold-light: #e8d5b0;
+        --cream: #f5f1eb;
+        --red: #8b2635;
+        --text-dark: #1a2530;
+        --text-mid: #4a5a68;
+        --text-light: #8a9aa8;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--cream);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--text-dark);
+        min-height: 100vh;
+      }
+
+      .header {
+        background: var(--slate);
+        padding: 22px 20px 18px;
+        position: relative;
+        overflow: hidden;
+      }
+      .header::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 42%;
+        height: 100%;
+        background: var(--gold);
+        clip-path: polygon(35% 0%, 100% 0%, 100% 100%, 0% 100%);
+        opacity: 0.17;
+        pointer-events: none;
+      }
+      .header-inner {
+        max-width: 500px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        position: relative;
+        z-index: 1;
+      }
+      .church-name {
+        font-size: 11px;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: var(--gold-light);
+        font-weight: 700;
+      }
+      .title {
+        font-size: 23px;
+        font-weight: 700;
+        color: white;
+        line-height: 1.15;
+        margin-top: 2px;
+        font-family: Georgia, serif;
+      }
+      .tagline {
+        font-size: 11px;
+        color: var(--gold);
+        opacity: 0.9;
+        margin-top: 3px;
+      }
+
+      .scripture {
+        background: var(--gold);
+        padding: 9px 20px;
+        text-align: center;
+        font-style: italic;
+        font-size: 12px;
+        color: var(--slate);
+        font-family: Georgia, serif;
+      }
+
+      .date-nav {
+        background: white;
+        padding: 14px 20px;
+        border-bottom: 1px solid rgba(45, 63, 78, 0.1);
+        max-width: 500px;
+        margin: 0 auto;
+      }
+      .date-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .nav-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1.5px solid var(--slate);
+        background: none;
+        color: var(--slate);
+        font-size: 22px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.18s;
+        line-height: 1;
+      }
+      .nav-btn:hover {
+        background: var(--slate);
+        color: white;
+      }
+      .date-center {
+        text-align: center;
+      }
+      .date-weekday {
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--text-light);
+      }
+      .date-full {
+        font-size: 21px;
+        font-weight: 700;
+        color: var(--slate);
+        font-family: Georgia, serif;
+      }
+      .today-btn {
+        display: none;
+        margin: 7px auto 0;
+        background: none;
+        border: none;
+        color: var(--gold);
+        font-size: 11px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        cursor: pointer;
+        font-weight: 700;
+      }
+
+      .tabs {
+        display: flex;
+        background: white;
+        border-bottom: 2px solid var(--cream);
+        max-width: 500px;
+        margin: 0 auto;
+      }
+      .tab-btn {
+        flex: 1;
+        padding: 12px;
+        background: none;
+        border: none;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        cursor: pointer;
+        color: var(--text-light);
+        border-bottom: 3px solid transparent;
+        margin-bottom: -2px;
+        transition: all 0.18s;
+      }
+      .tab-btn.active {
+        color: var(--slate);
+        border-bottom-color: var(--gold);
+      }
+
+      .content {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 16px 16px 48px;
+      }
+
+      .week-bar {
+        background: var(--slate);
+        border-radius: 10px 10px 0 0;
+        padding: 11px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 4px;
+      }
+      .week-bar-label {
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--gold-light);
+        font-weight: 700;
+      }
+      .year-badge {
+        background: var(--gold);
+        color: var(--slate);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        padding: 3px 9px;
+        border-radius: 20px;
+        text-transform: uppercase;
+      }
+
+      .card {
+        background: white;
+        border-radius: 0 0 10px 10px;
+        box-shadow: 0 4px 20px rgba(45, 63, 78, 0.1);
+        overflow: hidden;
+        margin-bottom: 14px;
+      }
+
+      .day-row {
+        padding: 12px 16px;
+        border-bottom: 1px solid rgba(45, 63, 78, 0.07);
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        border-left: 4px solid transparent;
+      }
+      .day-row:last-of-type {
+        border-bottom: none;
+      }
+      .day-row.is-today {
+        background: linear-gradient(
+          135deg,
+          rgba(201, 169, 110, 0.13),
+          rgba(45, 63, 78, 0.04)
+        );
+        border-left-color: var(--gold);
+      }
+
+      .day-dot-wrap {
+        text-align: center;
+        min-width: 36px;
+      }
+      .day-dot {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: var(--cream);
+        border: 1.5px solid rgba(45, 63, 78, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text-mid);
+        margin: 0 auto;
+      }
+      .day-dot.today-dot {
+        background: var(--gold);
+        color: var(--slate);
+        border-color: var(--gold);
+      }
+      .day-abbr {
+        font-size: 9px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--text-light);
+        margin-top: 3px;
+      }
+
+      .readings {
+        flex: 1;
+      }
+      .readings-label {
+        font-size: 11px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--gold);
+        font-weight: 700;
+        margin-bottom: 5px;
+      }
+      .passages {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        align-items: center;
+        margin-bottom: 5px;
+      }
+      .passage {
+        font-size: 13px;
+        color: var(--text-dark);
+      }
+      .dot-sep {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--gold);
+        display: inline-block;
+        flex-shrink: 0;
+      }
+      .psalm-tag {
+        display: inline-block;
+        font-size: 11px;
+        color: var(--red);
+        font-weight: 700;
+        background: rgba(139, 38, 53, 0.08);
+        padding: 2px 8px;
+        border-radius: 20px;
+      }
+
+      .rest-msg {
+        padding: 32px 20px;
+        text-align: center;
+        color: var(--text-light);
+        font-style: italic;
+      }
+      .rest-emoji {
+        font-size: 30px;
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      .reflection {
+        padding: 10px 16px;
+        background: rgba(45, 63, 78, 0.04);
+        border-top: 1px dashed rgba(45, 63, 78, 0.13);
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+      }
+      .refl-label {
+        font-size: 10px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--gold);
+        font-weight: 700;
+        white-space: nowrap;
+        padding-top: 1px;
+      }
+      .refl-passage {
+        font-size: 13px;
+        color: var(--text-mid);
+        font-style: italic;
+        font-family: Georgia, serif;
+      }
+
+      .progress-wrap {
+        background: white;
+        border-radius: 10px;
+        padding: 14px 16px;
+        box-shadow: 0 2px 12px rgba(45, 63, 78, 0.08);
+        margin-top: 4px;
+      }
+      .progress-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--text-light);
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+      .progress-bg {
+        height: 6px;
+        background: var(--cream);
+        border-radius: 3px;
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--gold), var(--slate));
+        border-radius: 3px;
+        transition: width 0.4s ease;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="header-inner">
+        <svg
+          width="44"
+          height="44"
+          viewBox="0 0 44 44"
+          fill="none"
+          style="flex-shrink: 0"
+        >
+          <circle cx="22" cy="22" r="20" stroke="#c9a96e" stroke-width="1.5" />
+          <circle
+            cx="22"
+            cy="22"
+            r="11"
+            stroke="#c9a96e"
+            stroke-width="1.2"
+            fill="none"
+          />
+          <circle cx="22" cy="22" r="4.5" fill="#c9a96e" opacity="0.6" />
+          <line
+            x1="22"
+            y1="11"
+            x2="22"
+            y2="8"
+            stroke="#c9a96e"
+            stroke-width="1.2"
+          />
+          <line
+            x1="22"
+            y1="33"
+            x2="22"
+            y2="36"
+            stroke="#c9a96e"
+            stroke-width="1.2"
+          />
+          <line
+            x1="11"
+            y1="22"
+            x2="8"
+            y2="22"
+            stroke="#c9a96e"
+            stroke-width="1.2"
+          />
+          <line
+            x1="33"
+            y1="22"
+            x2="36"
+            y2="22"
+            stroke="#c9a96e"
+            stroke-width="1.2"
+          />
+          <line
+            x1="14"
+            y1="14"
+            x2="12"
+            y2="12"
+            stroke="#c9a96e"
+            stroke-width="1.2"
+          />
+          <line
+            x1="30"
+            y1="30"
+            x2="32"
+            y2="32"
+            stroke="#c9a96e"
+            stroke-width="1.2"
+          />
+          <line
+            x1="30"
+            y1="14"
+            x2="32"
+            y2="12"
+            stroke="#c9a96e"
+            stroke-width="1.2"
+          />
+          <line
+            x1="14"
+            y1="30"
+            x2="12"
+            y2="32"
+            stroke="#c9a96e"
+            stroke-width="1.2"
+          />
+        </svg>
+        <div>
+          <div class="church-name">Resonate Church</div>
+          <div class="title">Rooted in the Word</div>
+          <div class="tagline">A journey in the Word. Together.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scripture">
+      "Let the word of Christ dwell in you richly..." — Colossians 3:16
+    </div>
+
+    <div class="date-nav">
+      <div class="date-row">
+        <button class="nav-btn" id="prevBtn">&#8249;</button>
+        <div class="date-center">
+          <div class="date-weekday" id="weekdayEl"></div>
+          <div class="date-full" id="dateEl"></div>
+          <button class="today-btn" id="todayBtn">&#8617; Jump to Today</button>
+        </div>
+        <button class="nav-btn" id="nextBtn">&#8250;</button>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="today">Today</button>
+      <button class="tab-btn" data-tab="week">This Week</button>
+    </div>
+
+    <div class="content">
+      <div id="view"></div>
+      <div class="progress-wrap">
+        <div class="progress-meta">
+          <span>Plan Progress</span>
+          <span id="progressLabel"></span>
+        </div>
+        <div class="progress-bg">
+          <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="home.data.js"></script>
+
+    <script>
+      // Total plan = 52 weeks Year 1 only (Year 2 can be added later)
+      var PLAN = Y1;
+      var TOTAL_YEARS = 1;
+
+      // Anchor: Week 1 Mon = Sep 29, 2025
+      var ANCHOR = new Date(2025, 8, 29);
+      ANCHOR.setHours(0, 0, 0, 0);
+
+      function midnight(d) {
+        var x = new Date(d);
+        x.setHours(0, 0, 0, 0);
+        return x;
+      }
+
+      function getMondayOf(date) {
+        var d = midnight(date);
+        var dow = d.getDay();
+        d.setDate(d.getDate() - (dow === 0 ? 6 : dow - 1));
+        return d;
+      }
+
+      function getWeekIndex(date) {
+        var mon = getMondayOf(date);
+        var diff = Math.round((mon - ANCHOR) / (7 * 86400000));
+        if (diff < 0) return 0;
+        return diff % PLAN.length;
+      }
+
+      function getPlanDay(date) {
+        var dow = midnight(date).getDay();
+        if (dow === 0 || dow === 6) return -1;
+        return dow - 1;
+      }
+
+      var DAYS_LONG = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ];
+      var DAYS_SHORT = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      var MONTHS = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+
+      var current = midnight(new Date());
+      var activeTab = "today";
+
+      function render() {
+        var today = midnight(new Date());
+        var isToday = current.getTime() === today.getTime();
+        document.getElementById("weekdayEl").textContent =
+          DAYS_LONG[current.getDay()];
+        document.getElementById("dateEl").textContent =
+          MONTHS[current.getMonth()] +
+          " " +
+          current.getDate() +
+          ", " +
+          current.getFullYear();
+        document.getElementById("todayBtn").style.display = isToday
+          ? "none"
+          : "block";
+        var wi = getWeekIndex(current);
+        var pct = Math.round(((wi + 1) / PLAN.length) * 100);
+        document.getElementById("progressLabel").textContent =
+          "Week " + (wi + 1) + " of " + PLAN.length;
+        document.getElementById("progressFill").style.width = pct + "%";
+        if (activeTab === "today") renderToday(today);
+        else renderWeek(today);
+      }
+
+      function renderToday(today) {
+        var wi = getWeekIndex(current);
+        var week = PLAN[wi];
+        var di = getPlanDay(current);
+        var reading = di >= 0 ? week.days[di] : null;
+        var isToday = current.getTime() === today.getTime();
+        var html = weekBar(week);
+        html += '<div class="card">';
+        if (di === -1) {
+          html +=
+            '<div class="rest-msg"><span class="rest-emoji">&#10013;&#65039;</span>Weekend &mdash; Rest &amp; Reflect<br><small style="font-size:12px;margin-top:6px;display:block">No reading scheduled today</small></div>';
+        } else {
+          html += '<div class="day-row is-today">' + dotHtml(current, true);
+          html +=
+            '<div class="readings"><div class="readings-label">' +
+            (isToday ? "Today &mdash; " : "") +
+            DAYS_LONG[current.getDay()] +
+            "</div>" +
+            passageHtml(reading) +
+            "</div></div>";
+        }
+        html += reflHtml(week) + "</div>";
+        document.getElementById("view").innerHTML = html;
+      }
+
+      function renderWeek(today) {
+        var wi = getWeekIndex(current);
+        var week = PLAN[wi];
+        var mon = getMondayOf(current);
+        var html = weekBar(week);
+        html += '<div class="card">';
+        for (var i = 0; i < 5; i++) {
+          var d = new Date(mon);
+          d.setDate(mon.getDate() + i);
+          var isThisToday = d.getTime() === today.getTime();
+          html +=
+            '<div class="day-row' +
+            (isThisToday ? " is-today" : "") +
+            '">' +
+            dotHtml(d, isThisToday);
+          html +=
+            '<div class="readings">' +
+            passageHtml(week.days[i] || null) +
+            "</div></div>";
+        }
+        html += reflHtml(week) + "</div>";
+        document.getElementById("view").innerHTML = html;
+      }
+
+      function weekBar(week) {
+        return (
+          '<div class="week-bar"><span class="week-bar-label">Week ' +
+          week.w +
+          " &nbsp;&middot;&nbsp; " +
+          week.d +
+          '</span><span class="year-badge">Year 1</span></div>'
+        );
+      }
+
+      function dotHtml(date, isToday) {
+        return (
+          '<div class="day-dot-wrap"><div class="day-dot' +
+          (isToday ? " today-dot" : "") +
+          '">' +
+          date.getDate() +
+          '</div><div class="day-abbr">' +
+          DAYS_SHORT[date.getDay()] +
+          "</div></div>"
+        );
+      }
+
+      function passageHtml(r) {
+        if (!r)
+          return '<span style="color:var(--text-light);font-style:italic">&mdash;</span>';
+        var h =
+          '<div class="passages"><span class="passage">&#128214; ' +
+          r.ot +
+          '</span><span class="dot-sep"></span><span class="passage">' +
+          r.nt +
+          "</span></div>";
+        if (r.ps) h += '<span class="psalm-tag">' + r.ps + "</span>";
+        return h;
+      }
+
+      function reflHtml(week) {
+        return (
+          '<div class="reflection"><span class="refl-label">Reflection</span><span class="refl-passage">' +
+          week.r +
+          "</span></div>"
+        );
+      }
+
+      document.getElementById("prevBtn").addEventListener("click", function () {
+        current.setDate(current.getDate() - 1);
+        render();
+      });
+      document.getElementById("nextBtn").addEventListener("click", function () {
+        current.setDate(current.getDate() + 1);
+        render();
+      });
+      document
+        .getElementById("todayBtn")
+        .addEventListener("click", function () {
+          current = midnight(new Date());
+          render();
+        });
+      document.querySelectorAll(".tab-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          activeTab = btn.dataset.tab;
+          document.querySelectorAll(".tab-btn").forEach(function (b) {
+            b.classList.remove("active");
+          });
+          btn.classList.add("active");
+          render();
+        });
+      });
+
+      render();
+    </script>
+  </body>
+</html>
