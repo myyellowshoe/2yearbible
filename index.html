@@ -297,6 +297,13 @@
         background: rgba(45, 63, 78, 0.08);
         padding: 4px 10px;
         border-radius: 20px;
+        text-decoration: none;
+        transition: background 0.18s, color 0.18s;
+      }
+      a.passage:hover,
+      a.passage:active {
+        background: var(--slate);
+        color: white;
       }
       .dot-sep {
         display: none;
@@ -345,6 +352,11 @@
         color: var(--text-mid);
         font-style: italic;
         font-family: Georgia, serif;
+        text-decoration: none;
+        transition: color 0.18s;
+      }
+      a.refl-passage:hover {
+        color: var(--gold);
       }
 
       .progress-wrap {
@@ -587,30 +599,62 @@
         );
       }
 
+      var BOOK_ABBR = {
+        "Genesis":"GEN","Exodus":"EXO","Leviticus":"LEV","Numbers":"NUM",
+        "Deuteronomy":"DEU","Joshua":"JOS","Judges":"JDG","Ruth":"RUT",
+        "1 Samuel":"1SA","2 Samuel":"2SA","1 Kings":"1KI","2 Kings":"2KI",
+        "1 Chronicles":"1CH","2 Chronicles":"2CH","Ezra":"EZR","Nehemiah":"NEH",
+        "Esther":"EST","Job":"JOB","Psalms":"PSA","Proverbs":"PRO",
+        "Ecclesiastes":"ECC","Song of Solomon":"SNG","Isaiah":"ISA",
+        "Jeremiah":"JER","Lamentations":"LAM","Ezekiel":"EZK","Daniel":"DAN",
+        "Hosea":"HOS","Joel":"JOL","Amos":"AMO","Obadiah":"OBA","Jonah":"JON",
+        "Micah":"MIC","Nahum":"NAM","Habakkuk":"HAB","Zephaniah":"ZEP",
+        "Haggai":"HAG","Zechariah":"ZEC","Malachi":"MAL","Matthew":"MAT",
+        "Mark":"MRK","Luke":"LUK","John":"JHN","Acts":"ACT","Romans":"ROM",
+        "1 Corinthians":"1CO","2 Corinthians":"2CO","Galatians":"GAL",
+        "Ephesians":"EPH","Philippians":"PHP","Colossians":"COL",
+        "1 Thessalonians":"1TH","2 Thessalonians":"2TH","1 Timothy":"1TI",
+        "2 Timothy":"2TI","Titus":"TIT","Philemon":"PHM","Hebrews":"HEB",
+        "James":"JAS","1 Peter":"1PE","2 Peter":"2PE","1 John":"1JN",
+        "2 John":"2JN","3 John":"3JN","Jude":"JUD","Revelation":"REV"
+      };
+      var BOOK_NAMES = Object.keys(BOOK_ABBR).sort(function(a,b){ return b.length - a.length; });
+
+      function passageToUrl(passage) {
+        for (var i = 0; i < BOOK_NAMES.length; i++) {
+          if (passage.indexOf(BOOK_NAMES[i]) === 0) {
+            var rest = passage.substring(BOOK_NAMES[i].length).trim();
+            var ch = rest.match(/^(\d+)/);
+            if (!ch) return null;
+            return "https://www.bible.com/bible/111/" + BOOK_ABBR[BOOK_NAMES[i]] + "." + ch[1] + ".NIV";
+          }
+        }
+        return null;
+      }
+
+      function passageLink(text) {
+        var url = passageToUrl(text);
+        if (url) return '<a class="passage" href="' + url + '" target="_blank" rel="noopener">' + text + '</a>';
+        return '<span class="passage">' + text + '</span>';
+      }
+
       function passageHtml(r) {
         if (!r)
           return '<span style="color:var(--text-light);font-style:italic">&mdash;</span>';
-        var h =
-          '<div class="passages"><span class="passage"> ' +
-          r.ot +
-          '</span><span class="dot-sep"></span><span class="passage">' +
-          r.nt +
-          "</span>";
+        var h = '<div class="passages">' + passageLink(r.ot) +
+          '<span class="dot-sep"></span>' + passageLink(r.nt);
         if (r.ps)
-          h +=
-            '<span class="dot-sep"></span><span class="passage">' +
-            r.ps +
-            "</span>";
+          h += '<span class="dot-sep"></span>' + passageLink(r.ps);
         h += "</div>";
         return h;
       }
 
       function reflHtml(week) {
-        return (
-          '<div class="reflection"><span class="refl-label">Reflection</span><span class="refl-passage">' +
-          week.r +
-          "</span></div>"
-        );
+        var url = passageToUrl(week.r);
+        var inner = url
+          ? '<a class="refl-passage" href="' + url + '" target="_blank" rel="noopener">' + week.r + '</a>'
+          : '<span class="refl-passage">' + week.r + '</span>';
+        return '<div class="reflection"><span class="refl-label">Reflection</span>' + inner + '</div>';
       }
 
       document.getElementById("prevBtn").addEventListener("click", function () {
