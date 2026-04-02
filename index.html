@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Rooted in the Word – Resonate Church</title>
+    <title>2 Year Bible – Resonate Church</title>
     <style>
       :root {
         --slate: #2d3f4e;
@@ -290,16 +290,16 @@
         margin-bottom: 5px;
       }
       .passage {
-        font-size: 13px;
-        color: var(--text-dark);
+        display: inline-block;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--slate);
+        background: rgba(45, 63, 78, 0.08);
+        padding: 4px 10px;
+        border-radius: 20px;
       }
       .dot-sep {
-        width: 4px;
-        height: 4px;
-        border-radius: 50%;
-        background: var(--gold);
-        display: inline-block;
-        flex-shrink: 0;
+        display: none;
       }
       .psalm-tag {
         display: inline-block;
@@ -591,12 +591,17 @@
         if (!r)
           return '<span style="color:var(--text-light);font-style:italic">&mdash;</span>';
         var h =
-          '<div class="passages"><span class="passage">&#128214; ' +
+          '<div class="passages"><span class="passage"> ' +
           r.ot +
           '</span><span class="dot-sep"></span><span class="passage">' +
           r.nt +
-          "</span></div>";
-        if (r.ps) h += '<span class="psalm-tag">' + r.ps + "</span>";
+          "</span>";
+        if (r.ps)
+          h +=
+            '<span class="dot-sep"></span><span class="passage">' +
+            r.ps +
+            "</span>";
+        h += "</div>";
         return h;
       }
 
