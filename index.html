@@ -431,7 +431,7 @@
       <div id="view"></div>
       <div class="progress-wrap">
         <div class="progress-meta">
-          <span>Plan Progress</span>
+          <span>Year 1 Progress</span>
           <span id="progressLabel"></span>
         </div>
         <div class="progress-bg">
@@ -522,7 +522,7 @@
         var wi = getWeekIndex(current);
         var pct = Math.round(((wi + 1) / PLAN.length) * 100);
         document.getElementById("progressLabel").textContent =
-          "Week " + (wi + 1) + " of " + PLAN.length;
+          "Week " + (wi + 1) + " of " + PLAN.length + " · Year 1 of 2";
         document.getElementById("progressFill").style.width = pct + "%";
         if (activeTab === "today") renderToday(today);
         else renderWeek(today);
